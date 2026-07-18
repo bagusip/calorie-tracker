@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111827" />
+    <title>CalorieTrack — Pelacak Kalori</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="calendar.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="CalorieTrack beranda"><span class="brand-mark">●</span><span>CalorieTrack</span></a>
+        <button class="icon-btn" id="settingsButton" aria-label="Pengaturan target kalori"><span aria-hidden="true">⚙</span></button>
+      </header>
+
+      <section class="hero">
+        <div><p class="eyebrow" id="todayLabel">HARI INI</p><h1>Halo, jaga ritmemu.</h1><p class="date" id="dateLabel"></p></div>
+        <div class="streak"><span>🔥</span><strong id="streakCount">1</strong><small>hari beruntun</small></div>
+      </section>
+
+      <section class="calendar-card" aria-label="Pilih tanggal pencatatan kalori">
+        <div class="calendar-toolbar"><button class="calendar-nav" id="previousMonth" aria-label="Bulan sebelumnya">‹</button><div><p class="eyebrow">PILIH TANGGAL</p><h2 id="monthLabel"></h2></div><button class="calendar-nav" id="nextMonth" aria-label="Bulan berikutnya">›</button></div>
+        <div class="weekdays" aria-hidden="true"><span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <p class="calendar-note">Pilih tanggal untuk mencatat makanan.</p>
+      </section>
+
+      <section class="progress-card" aria-label="Ringkasan kalori hari ini">
+        <div class="ring" id="calorieRing"><div class="ring-inner"><strong id="remainingCalories">2.000</strong><span>kkal tersisa</span></div></div>
+        <div class="progress-info"><div class="progress-heading"><h2>Target harian</h2><span id="goalCalories">2.000 kkal</span></div><div class="bar"><span id="progressBar"></span></div><div class="macro-grid"><div><span>Dimakan</span><strong id="eatenCalories">0</strong></div><div><span>Target</span><strong id="goalSmall">2.000</strong></div><div><span>Sisa</span><strong id="remainingSmall">2.000</strong></div></div></div>
+      </section>
+
+      <section class="section-heading"><div><p class="eyebrow" id="selectedDateLabel">CATAT HARI INI</p><h2>Makananmu</h2></div><button class="add-button" id="openForm">+ Tambah</button></section>
+      <section class="meal-list" id="mealList"></section>
+      <div class="empty-state" id="emptyState"><span>🍽️</span><h3>Belum ada makanan dicatat</h3><p>Mulai tambahkan makanan pertamamu hari ini.</p></div>
+    </main>
+
+    <dialog id="mealDialog"><form method="dialog" class="dialog-card" id="mealForm"><div class="dialog-title"><div><p class="eyebrow">CATAT MAKANAN</p><h2>Tambah ke harianmu</h2></div><button class="close" value="cancel" aria-label="Tutup">×</button></div><label>Pilih makanan cepat<select id="mealPreset"><option value="">Pilih dari daftar (opsional)</option><optgroup label="Makanan utama"><option value="Nasi putih|175">Nasi putih — 175 kkal</option><option value="Nasi goreng|430">Nasi goreng — 430 kkal</option><option value="Mie goreng|400">Mie goreng — 400 kkal</option><option value="Ayam goreng|260">Ayam goreng — 260 kkal</option><option value="Soto ayam|310">Soto ayam — 310 kkal</option><option value="Gado-gado|320">Gado-gado — 320 kkal</option><option value="Rendang sapi|468">Rendang sapi — 468 kkal</option></optgroup><optgroup label="Sarapan & camilan"><option value="Roti tawar, 2 lembar|160">Roti tawar, 2 lembar — 160 kkal</option><option value="Telur rebus, 1 butir|78">Telur rebus, 1 butir — 78 kkal</option><option value="Oatmeal, 1 mangkuk|150">Oatmeal, 1 mangkuk — 150 kkal</option><option value="Pisang, 1 buah|105">Pisang, 1 buah — 105 kkal</option><option value="Apel, 1 buah|95">Apel, 1 buah — 95 kkal</option><option value="Tempe goreng, 2 potong|170">Tempe goreng, 2 potong — 170 kkal</option></optgroup><optgroup label="Minuman"><option value="Kopi susu|180">Kopi susu — 180 kkal</option><option value="Teh manis|90">Teh manis — 90 kkal</option><option value="Jus jeruk|110">Jus jeruk — 110 kkal</option></optgroup></select></label><label>Nama makanan<input id="mealName" required placeholder="Contoh: Nasi goreng" maxlength="50" /></label><div class="form-row"><label>Kalori (kkal)<input id="mealCalories" required type="number" min="1" max="10000" placeholder="450" /></label><label>Waktu<select id="mealTime"><option value="Pagi">Pagi</option><option value="Siang">Siang</option><option value="Malam">Malam</option><option value="Camilan">Camilan</option></select></label></div><p class="helper">Kalori adalah perkiraan per porsi; Anda dapat mengubahnya.</p><div class="form-actions"><button class="secondary" value="cancel">Batal</button><button class="primary" id="saveMeal" value="default">Simpan makanan</button></div></form></dialog>
+
+    <dialog id="settingsDialog"><form method="dialog" class="dialog-card" id="settingsForm"><div class="dialog-title"><div><p class="eyebrow">PENGATURAN</p><h2>Target kalori</h2></div><button class="close" value="cancel" aria-label="Tutup">×</button></div><label>Target kalori harian<input id="goalInput" required type="number" min="500" max="10000" /></label><p class="helper">Target disimpan di perangkat ini.</p><div class="form-actions"><button class="secondary" value="cancel">Batal</button><button class="primary" value="default">Simpan target</button></div></form></dialog>
+    <template id="mealTemplate"><article class="meal"><div class="meal-icon"></div><div class="meal-copy"><strong></strong><span></span></div><div class="meal-calories"></div><button class="delete" aria-label="Hapus makanan">×</button></article></template>
+    <script src="app.js"></script>
+  </body>
+</html>
